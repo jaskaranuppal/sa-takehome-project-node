@@ -14,19 +14,70 @@
     </div>
     <div class="card box-shadow mt-40">
       <div class="card-body">
-        <form name="payment-form">
+        <form id="payment-form" name="payment-form">
           <div>
             <label for="email">Email address</label>
             <input type="email" class="form-control" id="email" name="email" placeholder="you@email.com">
           </div>
-          <div class="mt-20 text-center text-secondary border-placeholder">
-            Add Stripe Element here!
+          <div id="payment-element" class="mt-20 text-center text-secondary border-placeholder">
           </div>
           <div class="mt-20">
-            <button type="submit" class="btn btn-lg btn-block btn-primary">Pay $<span class="amount" data-amount="{{amount}}"></span></button>
+            <button id="submit" type="submit" class="btn btn-lg btn-block btn-primary">Pay $<span class="amount"
+                data-amount="{{amount}}"></span></button>
+          </div>
+          <div id="error-message">
+            <!-- Display error message to your customers here -->
           </div>
         </form>
+        <div id="messages" role="alert" style="display: none;"></div>
       </div>
     </div>
   </div>
 </div>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Fetch the publishable key
+    const { publishableKey } = await fetch('/config').then(r => r.json());
+    const stripe = Stripe(publishableKey);
+
+    // Get the amount from the data attribute
+    const amountElement = document.querySelector('.amount');
+    const amount = amountElement.dataset.amount;
+
+    // Call create-payment-intent endpoint
+    const { clientSecret } = await fetch('/create-payment-intent', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount })
+    }).then(r => r.json());
+
+    // Set up Stripe Elements
+    const elements = stripe.elements({ clientSecret });
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#payment-element');
+
+    // Handle form submission
+    const form = document.querySelector("#payment-form");
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      
+      // Disable the submit button to prevent multiple submissions
+      document.querySelector("#submit").disabled = true;
+      
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: `${window.location.origin}/success`,
+        }
+      });
+
+      if (error) {
+        const messageContainer = document.querySelector("#error-message");
+        messageContainer.textContent = error.message;
+        document.querySelector("#submit").disabled = false;
+      }
+      // If no error, the customer will be redirected to the return_url
+    });
+  });
+</script>
