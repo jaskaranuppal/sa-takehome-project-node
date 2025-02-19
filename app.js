@@ -95,7 +95,8 @@ app.post('/create-payment-intent', async(req, res) => {
  */
 app.get('/success', function(req, res) {
   const paymentIntentId = req.query.payment_intent
-  res.render('success', { paymentIntentId});
+  const amt = req.query.amount
+  res.render('success', { paymentIntentId, amt});
 });
 
 /**

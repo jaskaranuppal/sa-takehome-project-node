@@ -45,6 +45,14 @@
     const amountElement = document.querySelector('.amount');
     const amount = amountElement.dataset.amount;
 
+    // Remove the dollar sign and convert to a number
+    const amountInDollars = parseFloat(amount.replace('$', ''));
+
+    // Divide by 100 to convert from cents to dollars
+    const result = amountInDollars / 100;
+
+    console.log ('result: '+result);
+    
     // Call create-payment-intent endpoint
     const { clientSecret } = await fetch('/create-payment-intent', {
       method: "POST",
@@ -62,22 +70,22 @@
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       
-      // Disable the submit button to prevent multiple submissions
-      document.querySelector("#submit").disabled = true;
-      
-      const { error } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: `${window.location.origin}/success`,
-        }
-      });
-
-      if (error) {
-        const messageContainer = document.querySelector("#error-message");
-        messageContainer.textContent = error.message;
-        document.querySelector("#submit").disabled = false;
+    // Disable the submit button to prevent multiple submissions
+    document.querySelector("#submit").disabled = true;
+    
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: `${window.location.origin}/success?amount=${result}`,
       }
-      // If no error, the customer will be redirected to the return_url
+    });
+
+    if (error) {
+      const messageContainer = document.querySelector("#error-message");
+      messageContainer.textContent = error.message;
+      document.querySelector("#submit").disabled = false;
+    }
+    // If no error, the customer will be redirected to the return_url
     });
   });
 </script>
