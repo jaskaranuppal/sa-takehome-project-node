@@ -76,7 +76,6 @@ app.post('/create-payment-intent', async(req, res) => {
         currency: 'aud',
         automatic_payment_methods: { enabled: true }
     })
-    console.log('PI: '+paymentIntent);
     res.send({
       clientSecret: paymentIntent.client_secret,
     });
