@@ -1,8 +1,8 @@
 const express = require('express');
 const path = require('path');
 const exphbs = require('express-handlebars');
-require('dotenv').config();
-const stripe = require('stripe');
+const env = require('dotenv').config();
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 var app = express();
 
@@ -22,6 +22,16 @@ app.use(express.json({}));
 app.get('/', function(req, res) {
   res.render('index');
 });
+
+/**
+ * Get Publishable key
+ */
+app.get('/config', (req, res) => {
+  res.send({
+    publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+  });
+});
+
 
 /**
  * Checkout route
@@ -57,11 +67,36 @@ app.get('/checkout', function(req, res) {
   });
 });
 
+app.post('/create-payment-intent', async(req, res) => {
+
+  let paymentIntent;
+  try{
+    paymentIntent = await stripe.paymentIntents.create ({
+        amount: req.body.amount,
+        currency: 'aud',
+        automatic_payment_methods: { enabled: true }
+    })
+    console.log('PI: '+paymentIntent);
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+    });
+  }
+  catch (e) {
+    return res.status(400).send({
+      error: {
+        message: e.message,
+      },
+    });
+  }
+})
+
+
 /**
  * Success route
  */
 app.get('/success', function(req, res) {
-  res.render('success');
+  const paymentIntentId = req.query.payment_intent
+  res.render('success', { paymentIntentId});
 });
 
 /**
