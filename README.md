@@ -72,14 +72,15 @@ Before running the application, ensure you have the following installed:
 4. Users enter their payment details and complete the purchase by hitting Pay button. 
 5. A payment confirmation page displays the total amount charged and payment intent ID.
 
-The goal is to use the provided boilerplate code to integrate Stripe APIs effectively. Since Stripe Elements is used on both the client and server sides, the strategy is to set the pricing on the server to prevent malicious users from tampering with the API call and submitting incorrect pricing. The server sends back the correct item price, and a call is made to create a payment intent. The client secret from this intent is then used to render the payment element on the client side. This payment element manages client-side payment validation and securely sends the credit card details to Stripe’s backend. The “Pay $23” button, for example, triggers the confirm payment API to finalize the transaction. Once a success status is received, the payment intent ID is returned and shown to the customer.
+The goal is to use the provided boilerplate code to integrate Stripe APIs effectively. Since Stripe Elements is used on both the client and server sides, the strategy is to set the pricing on the server to prevent malicious users from tampering with the API call and submitting incorrect pricing. The server sends back the correct item price, and a call is made to create a payment intent. The client secret from this intent is then used to render the payment element on the client side. This payment element manages client-side payment validation and securely sends the credit card details to Stripe’s backend. The “Pay $23” button, for example, triggers the confirm payment API to finalize the transaction. Once a success status is received, the payment intent ID is returned and shown to the customer
+
 [Sequence Diagram for reference](https://lucid.app/lucidchart/b5c53e81-6c3c-4c46-8647-9fa2af261010/edit?viewport_loc=-1096%2C-559%2C2097%2C1138%2C0_0&invitationId=inv_af01c1da-832c-4d23-ab9a-459bfb841886)
 
 
 ## Documentation References
 
-1. [Stripe Payment Intent API](https://docs.stripe.com/api/payment_intents))
-2. [Stripe Accept Payment Sample](https://github.com/stripe-samples/accept-a-payment))
+1. [Stripe Payment Intent API](https://docs.stripe.com/api/payment_intents)
+2. [Stripe Accept Payment Sample](https://github.com/stripe-samples/accept-a-payment)
 3. [Stripe Elements Examples](https://github.com/stripe/elements-examples)
 4. [Stripe Payment Element Doc](https://docs.stripe.com/payments/payment-element)
 5. [Handlebars Documentation](https://handlebarsjs.com/)
