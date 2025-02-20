@@ -36,11 +36,9 @@ Before running the application, ensure you have the following installed:
 
 ## Installation and Setup
 
-Before cloning the repository, [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo?tool=webui) the repo https://github.com/mattmitchell6/sa-takehome-project-node to your github account.
-
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourgithubusername/sa-takehome-project-node.git
+   git clone https://github.com/mattmitchell6/sa-takehome-project-node.git
    cd sa-takehome-project-node
    ```
 2. Install dependencies:
