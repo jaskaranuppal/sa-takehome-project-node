@@ -1,5 +1,5 @@
 # Simple Checkout Example with Stripe - Stripe Press
-This project is a simple e-commerce application that a customer can use to purchase a book built with Node.js, Express, and Handlebars. The primary objective is to integrate Stripe elements and APIs for handling one time payments.
+This project is an e-commerce application that a customer can use to purchase a book online. This application is developed with Node.js, Express, and Handlebars. The primary objective is to integrate Stripe elements and APIs for handling one time payments.
 
 ## Table of Contents
 - [Features](#features)
@@ -16,7 +16,7 @@ This project is a simple e-commerce application that a customer can use to purch
 
 - Users can browse books and select one to purchase.
 - Checkout process is handled using Stripe Elements.
-- Payments are processed through Stripe, and a confirmation page displays the total charge and payment intent ID.
+- Payments are processed through Stripe, and a confirmation page displays the total amount charged and payment intent ID.
 
 ## Technologies Used
 
@@ -74,8 +74,8 @@ Before cloning the repository, [fork](https://docs.github.com/en/pull-requests/c
 4. Users enter their payment details and complete the purchase by hitting Pay button. 
 5. A payment confirmation page displays the total amount charged and payment intent ID.
 
-The focus is to utilize the boilerplate code provided to integrate Stripe APIs. Since Stripe Element is referenced on both client and server side, the approach was to set the pricing from the server to avoid any malicious user from updating the API call with incorrect pricing. the server returns the price of the item selected, the call is made to generate a payment-intent and use the client secret from it to render the payment element on the client side. This payment element handles client side payment validations and passes the credit card data securely to the Stripe backend. The `Pay $23` (for example) button triggers the confirm payment API to complete the transaction. Upon recieving the success status, a payment intent id is returned that is displayed to the customer.
-[Sequence Diagram](https://lucid.app/lucidchart/b5c53e81-6c3c-4c46-8647-9fa2af261010/edit?viewport_loc=-1096%2C-559%2C2097%2C1138%2C0_0&invitationId=inv_af01c1da-832c-4d23-ab9a-459bfb841886)
+The goal is to use the provided boilerplate code to integrate Stripe APIs effectively. Since Stripe Elements is used on both the client and server sides, the strategy is to set the pricing on the server to prevent malicious users from tampering with the API call and submitting incorrect pricing. The server sends back the correct item price, and a call is made to create a payment intent. The client secret from this intent is then used to render the payment element on the client side. This payment element manages client-side payment validation and securely sends the credit card details to Stripe’s backend. The “Pay $23” button, for example, triggers the confirm payment API to finalize the transaction. Once a success status is received, the payment intent ID is returned and shown to the customer.
+[Sequence Diagram for reference](https://lucid.app/lucidchart/b5c53e81-6c3c-4c46-8647-9fa2af261010/edit?viewport_loc=-1096%2C-559%2C2097%2C1138%2C0_0&invitationId=inv_af01c1da-832c-4d23-ab9a-459bfb841886)
 
 
 ## Documentation References
