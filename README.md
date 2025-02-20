@@ -1,29 +1,104 @@
-# Take home project
-This is a simple e-commerce application that a customer can use to purchase a book, but it's missing the payments functionality —  your goal is to integrate Stripe to get this application running!
+# Simple Book Checkout Example with Stripe
+This project is a simple e-commerce application that a customer can use to purchase a book built with Node.js, Express, and Handlebars. The primary objective is to integrate Stripe elements and APIs for handling one time payments.
 
-## Candidate instructions
-You'll receive these in email.
+## Table of Contents
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Prerequisites](#prerequisites)
+- [Installation and Setup](#installation-and-setup)
+- [Application Architecture](#application-architecture)
+- [Solution Architecture and Approach](#solution-architecture-and-approach)
+- [Documentation References](#documentation-references)
+- [Challenges Faced](#challenges-faced)
+- [Future Enhancements](#future-enhancements)
 
-## Application overview
-This demo is written in Javascript (Node.js) with the [Express framework](https://expressjs.com/). You'll need to retrieve a set of testmode API keys from the Stripe dashboard (you can create a free test account [here](https://dashboard.stripe.com/register)) to run this locally.
+## Features
 
-We're using the [Bootstrap](https://getbootstrap.com/docs/4.6/getting-started/introduction/) CSS framework. It's the most popular CSS framework in the world and is pretty easy to get started with — feel free to modify styles/layout if you like. 
+- Users can browse books and select one to purchase.
+- Checkout process is handled using Stripe Elements.
+- Payments are processed through Stripe, and a confirmation page displays the total charge and payment intent ID.
 
-To simplify this project, we're also not using any database here, either. Instead `app.js` includes a simple switch statement to read the GET params for `item`. 
+## Technologies Used
 
-To get started, clone the repository and run `npm install` to install dependencies:
+- Node.js
+- Express.js
+- Handlebars (templating engine)
+- Stripe API
+- dotenv (for environment variables)
 
-```
-git clone https://github.com/mattmitchell6/sa-takehome-project-node && cd sa-takehome-project-node
-npm install
-```
+## Prerequisites
 
-Rename `sample.env` to `.env` and populate with your Stripe account's test API keys
+Before running the application, ensure you have the following installed:
 
-Then run the application locally:
+- Node.js (v14 or later)
+- npm or yarn
+- A Stripe account (with API keys)
 
-```
-npm start
-```
+## Installation and Setup
 
-Navigate to [http://localhost:3000](http://localhost:3000) to view the index page.
+Before cloning the repository, [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo?tool=webui) the repo https://github.com/mattmitchell6/sa-takehome-project-node to your github account.
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/yourgithubusername/sa-takehome-project-node.git
+   cd sa-takehome-project-node
+   ```
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Set up environment variables: rename the `sample.env` to `.env` file in the root directory and add your Stripe API keys:
+   ```env
+   STRIPE_SECRET_KEY=pk_test_xxxxxxxxx
+   STRIPE_PUBLIC_KEY=sk_test_xxxxxxxxx
+   ```
+4. Start the application:
+   ```sh
+   npm start
+   ```
+   The server will start on `http://localhost:3000/`
+
+## Application Architecture
+
+- `server.js`: The main entry point handling routing and Stripe integration.
+- `views/`: Contains Handlebars templates for rendering pages.
+- `public/`: Static assets like CSS and JavaScript.
+- Uses `express-handlebars` to dynamically render pages.
+- Visit [here](https://lucid.app/lucidchart/b5c53e81-6c3c-4c46-8647-9fa2af261010/edit?viewport_loc=-1096%2C-559%2C2097%2C1138%2C0_0&invitationId=inv_af01c1da-832c-4d23-ab9a-459bfb841886) for the sequence diagram
+
+## Solution Architecture and Approach
+
+1. Users visit the homepage (index) and select a book to purchase.
+2. When the user clicks "Pay," a request is sent to `/checkout`.
+3. The server creates a Stripe Payment Intent via Stripe API and renders the checkout page with a Stripe Payment Element.
+4. Users enter their payment details and complete the purchase by hitting Pay button. 
+5. A payment confirmation page displays the total amount charged and payment intent ID.
+
+The focus is to utilize the boilerplate code provided to integrate Stripe APIs. Since Stripe Element is referenced on both client and server side, the approach was to set the pricing from the server to avoid any malicious user from updating the API call with incorrect pricing. the server returns the price of the item selected, the call is made to generate a payment-intent and use the client secret from it to render the payment element on the client side. This payment element handles client side payment validations and passes the credit card data securely to the Stripe backend. The `Pay $23` (for example) button triggers the confirm payment API to complete the transaction. Upon recieving the success status, a payment intent id is returned that is displayed to the customer.
+[Sequence Diagram](https://lucid.app/lucidchart/b5c53e81-6c3c-4c46-8647-9fa2af261010/edit?viewport_loc=-1096%2C-559%2C2097%2C1138%2C0_0&invitationId=inv_af01c1da-832c-4d23-ab9a-459bfb841886)
+
+
+## Documentation References
+
+1. [Stripe Payment Intent API](https://docs.stripe.com/api/payment_intents))
+2. [Stripe Accept Payment Sample](https://github.com/stripe-samples/accept-a-payment))
+3. [Stripe Elements Examples](https://github.com/stripe/elements-examples)
+4. [Stripe Payment Element Doc](https://docs.stripe.com/payments/payment-element)
+5. [Handlebars Documentation](https://handlebarsjs.com/)
+6. [Bootstrap Documentation](https://getbootstrap.com/docs)
+
+
+## Challenges Faced
+
+- Handling Stripe's asynchronous API responses.
+- Familiarizing with Node.js & Express
+- Setting up Handlebars templates to pass data.
+- Handling amounts in cents to dollars in API call
+
+## Future Enhancements
+
+- **User Management**: Allow users to create accounts, save payment methods and track order history.
+- **Database Integration**: Inventory management and storing transactions in a database.
+- **Shipping & Taxes Integration**: Add functionality to calculate taxes and shipping costs in the checkout.
+- **Webhooks Integration**: Use Stripe Webhooks to handle various payment events.
+- **External Integrations**: Integrating with 3rd party services such as emails for Order Status updates, Shipping & Tracking integrations with carriers.
