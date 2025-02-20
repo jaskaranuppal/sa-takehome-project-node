@@ -1,4 +1,4 @@
-# Simple Book Checkout Example with Stripe
+# Simple Checkout Example with Stripe - Stripe Press
 This project is a simple e-commerce application that a customer can use to purchase a book built with Node.js, Express, and Handlebars. The primary objective is to integrate Stripe elements and APIs for handling one time payments.
 
 ## Table of Contents
